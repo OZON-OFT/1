@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Мой сайт</title>
+  <style>
+    /* === БАЗОВЫЕ СТИЛИ === */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background: #f2f2f2;
+      color: #333;
+    }
+
+    /* Контейнер — ограничивает ширину по центру */
+    .wrap {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 40px 20px;
+    }
+
+    /* Заголовки разделов */
+
+    section {
+      margin-bottom: 60px;
+    }
+
+    .hour {
+      max-height: 400px;
+    }
+
+
+    /* ============================================================
+       ГАЛЕРЕЯ-СЛАЙДЕР
+       Добавить слайд: скопируй <div class="slide"><img ...></div>
+       ============================================================ */
+
+    .slider {
+      position: relative;
+      overflow: hidden;
+      background: #e8e8e8;
+      border-radius: 4px;
+    }
+
+    /* Лента всех слайдов — двигается через translateX в JS */
+    .track {
+      display: flex;
+      transition: transform 0.4s ease;
+    }
+
+    /* Один слайд занимает 100% ширины слайдера */
+    .slide {
+      min-width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    /* object-fit:contain — картинка показывается целиком, без обрезки.
+       Меняй max-height если нужна другая высота галереи. */
+    .slide img {
+      width: 100%;
+      max-height: 300px;
+      object-fit: contain;
+      display: block;
+      cursor: zoom-in;
+    }
+
+    /* Кнопки ← → */
+    .btn-prev,
+    .btn-next {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(255, 255, 255, 0.85);
+      border: none;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      font-size: 1.1rem;
+      cursor: pointer;
+      color: #444;
+    }
+
+    .btn-prev {
+      left: 10px;
+    }
+
+    .btn-next {
+      right: 10px;
+    }
+
+    .btn-prev:hover,
+    .btn-next:hover {
+      background: #fff;
+    }
+
+    /* Точки под слайдером */
+    .dots {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 14px;
+    }
+
+    .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #bbb;
+      border: none;
+      cursor: pointer;
+      padding: 0;
+    }
+
+    .dot.on {
+      background: #555;
+    }
+
+    .f_mat {
+      max-width: 400px;
+    }
+
+    .f_ban {
+      max-width: 400px;
+    }
+
+
+    /* ============================================================
+       АККОРДЕОН
+       Добавить вопрос: скопируй <details>...</details>
+       ============================================================ */
+
+    .accordion details {
+      border-top: 1px solid #ddd;
+    }
+
+    .accordion details:last-child {
+      border-bottom: 1px solid #ddd;
+    }
+
+    .accordion summary {
+      padding: 18px 4px;
+      cursor: pointer;
+      font-size: 0.97rem;
+      list-style: none;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      user-select: none;
+    }
+
+    .accordion summary::-webkit-details-marker {
+      display: none;
+    }
+
+    /* Иконка +/- справа */
+    .accordion summary::after {
+      content: '+';
+      font-size: 1.3rem;
+      color: #aaa;
+      flex-shrink: 0;
+    }
+
+    .accordion details[open] summary::after {
+      content: '−';
+    }
+
+    .accordion .answer {
+      padding: 0 4px 18px;
+      font-size: 0.93rem;
+      color: #666;
+      line-height: 1.7;
+    }
+
+
+    /* ============================================================
+       МОДАЛЬНОЕ ОКНО
+       ============================================================ */
+
+    #modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.82);
+      z-index: 999;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    #modal.on {
+      display: flex;
+    }
+
+    #modal img {
+      max-width: 90vw;
+      max-height: 90vh;
+      object-fit: contain;
+    }
+
+    #modal-close {
+      position: fixed;
+      top: 16px;
+      right: 20px;
+      background: none;
+      border: none;
+      color: #fff;
+      font-size: 2rem;
+      cursor: pointer;
+    }
+
+    .attention {
+      color:red;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="wrap">
+
+
+
+    <div class="slider">
+      <div class="track">
+
+        <!-- Слайд 1 — замени src на свою картинку -->
+        <div class="slide">
+          <img src="images/1.jpg" alt="Фото 1">
+        </div>
+
+        <!-- Слайд 2 -->
+        <div class="slide">
+          <img src="images/2.jpg" alt="Фото 2">
+        </div>
+
+        <!-- Слайд 3 -->
+        <div class="slide">
+          <img src="images/3.jpg" alt="Фото 3">
+        </div>
+
+        <!-- Слайд 4 -->
+        <div class="slide">
+          <img src="images/4.jpg" alt="Фото 4">
+        </div>
+
+        <div class="slide">
+          <img src="images/5.jpg" alt="Фото 5">
+        </div>
+
+        <div class="slide">
+          <img src="images/6.jpg" alt="Фото 6">
+        </div>
+        
+        <div class="slide">
+          <img src="images/7.jpg" alt="Фото 6">
+        </div>
+
+
+      </div>
+
+      <button class="btn-prev">&#8592;</button>
+      <button class="btn-next">&#8594;</button>
+    </div>
+
+    <div class="dots"></div>
+    </section>
+
+
+    <section> <!--Текст вступления -->
+
+      <p>Мы используем уязвимости в системе озон для увеличения заработка.</p>
+      <br>
+
+      <p>Эти уязвимости позволяют, например, <b>прогонять один товар через несколько операций</b>, в которых он не
+        нуждается, или <b>увеличивать его объём</b>.</p>
+      <i>
+        <p>Система думает что всё в порядке и платит больше.</p>
+      </i>
+
+      <br>
+      <p>Такие махинации называются <b>фродом</b>.</p>
+      <p>Способы фрода отличаются в зависимости от типа склада.</p>
+    </section>
+
+    <section> <!--Аккордеон 1 -->
+
+      <div class="accordion">
+
+        <details>
+          <summary>
+            <h3>Я работаю на крупном складе🏢</h3>
+          </summary>
+          <p>Суть махинации в том, что мы изменяем объем товара через системные настройки ТСД.
+          <p>После этого система платит за те же операции в 4-5 раз больше.</p>
+
+          <br>
+          <p>Для того, чтобы изменить объем нужен пароль от админ-панели. </p>
+
+          <br>
+
+          <h3>Что нужно делать с паролем?</h3>
+
+          <p>1) Жмёшь 3 точки на ТСД</p>
+          <p>2) Заходишь в раздел "Системные настройки"</p>
+          <p>3) Вводишь пароль, потом пикаешь учётку.</p>
+          <p>4) Когда работаешь пикаешь товар, нажимаешь "информация о товаре". Там будет вкладка "Объём"</p>
+          т.к. ты вошёл через админку, тсд даст тебе этот объем изменить.
+          <p>5) Если товар маленький ставишь 3-4 литра. Если
+            средний 6-7 л.</p>
+          <br><br>
+          <h3>Откуда у меня пароль?</h3>
+          <p>У нас на складе свой человек - внутренний сотрудник. он сливает информацию за процент.</p>
+          <br><br>
+          <h3>Может ли пароль измениться?</h3>
+
+          <p>Да, такое время от времени происходит. Если изменится - просто напиши мне, я скину новый БЕСПЛАТНО.</p>
+          <br>
+          <i><b>Средний заработок на крупном складе 15-20 т.р./день</b></i>
+
+          <br><br>
+
+        </details>
+
+        <details>
+          <summary>
+            <h3>Я работаю на cортировочном центре🏠 </h3>
+          </summary>
+          <p>Тут схема немного сложнее, зато не нужен пароль.
+          <p>Вкратце, суть в том, что ты прогоняешь один груз через несколько операций, за каждую из которых ТСД
+            начисляет тебе рубли.</p>
+          <br>
+          <p>Я скину подробную инструкцию, с помощью каких кодов, операций и в каком порядке это делать правильно</p>
+          <br>
+          <i><b>Средний заработок на СЦ 10-15 т.р./день</b></i>
+          <br><br>
+
+        </details>
+        <details>
+          <summary>
+            <h3>А если я работаю на мини-складе / распределительном центре?</h3>
+          </summary>
+          <p>К сожалению для таких типов складов у нас пока нет способов фрода.</p>
+          <br>
+        </details>
+
+
+      </div>
+    </section>
+
+    <img src="hour/1.jpg" class="hour">
+    <img src="hour/2.jpg" class="hour">
+
+
+    <section> <!--Аккордеон 2 -->
+      <div class="accordion">
+
+        <details>
+          <summary>
+            <h3>Видят ли эти операции старшие смены и администраторы?</h3>
+          </summary>
+          <p>Вышестоящие на складе видят только твою выработку за день, они не видят, какие операции ты
+            производишь на своем ТСД.
+          <p>Самый простой способ "спалиться" - это выносить со смены большие суммы.</p>
+
+          <br>
+          <h3><i>В связи с этим есть несколько правил📋✏️:</i></h3>
+
+          <p>1) Заниматься фордом не больше 3-4 часа за смену. до и после - обычная работа.</p>
+          <p> 2) делать выработку не больше чем в 1.5 раза от указанного дохода вашего склада. (например, если ожидаемый
+            доход в приложении - 11.000, не делай больше 16к)</p>
+          <img src="images/mat.jpg" class="f_mat">
+
+          <p> 3) Работать с фондом лучше начинать после обеда.</p>
+          <p>4) Никаким друзьям и знакомым ничего не рассказываем.</p>
+          <br>
+          <h3 class="attention">ВНИМАНИЕ!</h3>
+        <p>Чисто технически вы можете зарабатывать больше, можете использовать схемы когда угодно. </p>
+        <p>Всё это под вашу личную ответственность, мы не можем и не будем отвечать за ваши ошибки.</p>
+        <br>
+
+
+        </details>
+
+        <details>
+          <summary>
+            <h3>Что будет если меня всё таки поймают?👮‍♂️</h3>
+          </summary>
+          <p>Такое происходит редко, особенно если следуешь правилам.</p>
+          <p>Но если тебя каким то образом вычислят, твою учётную запись залочат. Ты попадешь в черный список озон.</p>
+          <p>Выглядель это будет примерно так:</p>
+          <img src="images/ban.jpg" class="f_ban">
+          <br>
+          <p>это некритично, учетную запись можно разблокировать.</p>
+
+
+          <p>Разблокировка происходит через подачу апелляции в разделе "инструменты начальника смены" с
+            обоснованием ошибки блокировки.Грубо говоря нужно красочно расписать, что тебя заблокировали по ошибке.</p>
+          <br>
+          <p>Мы занимаемся и этим тоже, но надеюсь тебе не придется обращаться по этому поводу) просто не нарушай
+            правила.</p>
+          <br><br>
+
+
+          <h3>НАПОМИНАЮ</h3>
+          <p>За фрод не предусмотрено уголовное или административное наказание. Тем более штрафы на гос. услугах, как
+            некоторые говорят (пугают)</p>
+          <br>
+          </p>
+        </details>
+
+
+
+      </div>
+    </section>
+
+    <h2>Отзывы:</h2>
+    <section> <!--Галерея отзывов -->
+
+      <div class="slider">
+        <div class="track">
+
+          <!-- Слайд 1 — замени src на свою картинку -->
+          <div class="slide">
+            <img src="feed/1.jpg" alt="Фото 1">
+          </div>
+
+          <!-- Слайд 2 -->
+          <div class="slide">
+            <img src="feed/2.jpg" alt="Фото 2">
+          </div>
+
+          <!-- Слайд 3 -->
+          <div class="slide">
+            <img src="feed/3.jpg" alt="Фото 3">
+          </div>
+
+          <!-- Слайд 4 -->
+          <div class="slide">
+            <img src="feed/4.jpg" alt="Фото 4">
+          </div>
+
+          <div class="slide">
+            <img src="feed/5.jpg" alt="Фото 4">
+          </div>
+
+          <div class="slide">
+            <img src="feed/6.jpg">
+          </div>
+
+
+
+        </div>
+
+        <button class="btn-prev">&#8592;</button>
+        <button class="btn-next">&#8594;</button>
+      </div>
+
+      <div class="dots"></div>
+    </section>
+
+    <section> <!--Текст заключение-->
+      <p>Как ты уже понял, информация не бесплатная.</p>
+      <p>Но по сравнению с возможностями, которые даст тебе фрод, это - копейки.</p>
+      <br><br>
+
+
+      <h3>ПРАЙС:</h3>
+      <br>
+      <p>Пароль от админки для крупного склада -- 1800 р.</p>
+      <br>
+      <p>Мануал для работы на СЦ -- 1100 р.</p>
+
+<br><br>
+      <hr>
+      <br>
+      <h3><a href="t.me/managerozonfrod">Вопросы, покупка 👈</a></h3>
+      <p>@managerozonfrod - ТГ, если ссылка не работает</p>
+      <br>
+      <i>актуальность предоставляемой информации: май 2026</i>
+    </section>
+
+    <section> <!--Аккордеон последний-->
+      <div class="accordion">
+
+
+        <details>
+          <summary>
+            <h3>Что я получу после покупки?</h3>
+          </summary>
+          <p>
+          <h4>Для крупного склада:</h4>
+
+          <br>
+          После оплаты отправляю пароль от админ-панели, инструкцию что и как делать для всех операций (Сортировка
+          крупного товара, сортировка мелкого товара, приёмка, размещение, подбор). Бонусом отправляю лайфхаки и
+          прочую инфу для работы<br>
+          <p><i>на разных складах пароль разный. Поэтому при покупке пиши название склада на котором работаешь.</i></p>
+          <h4>Для СЦ: </h4>
+          <br>
+
+          Отправлю подробную инструкцию по шагам что и как делать на сортировочном центре.
+          </p>
+          <br>
+        </details>
+
+        <details>
+          <summary>
+            <h3>Для чего я это все продаю, ведь могу тихо и спокойно дальше зарабатывать большие суммы?</h3>
+          </summary>
+          <p>Для дополнительного заработка. Всё просто.</p> <br>
+        </details>
+      </div>
+      <br>
+
+      
+
+
+    </section>
+
+  </div><!-- /wrap -->
+
+
+  <!-- Модальное окно для просмотра фото -->
+  <div id="modal">
+    <button id="modal-close">&#10005;</button>
+    <img id="modal-img" src="" alt="">
+  </div>
+
+
+  <script>
+    /* === СЛАЙДЕРЫ === */
+
+    document.querySelectorAll('.slider').forEach(slider => {
+
+      const track = slider.querySelector('.track');
+      const slides = track.querySelectorAll('.slide');
+
+      const prev = slider.querySelector('.btn-prev');
+      const next = slider.querySelector('.btn-next');
+
+      const dotsWrap = slider.parentElement.querySelector('.dots');
+
+      let cur = 0;
+
+      // создаём точки
+      slides.forEach((_, i) => {
+        const d = document.createElement('button');
+
+        d.className = 'dot' + (i === 0 ? ' on' : '');
+
+        d.onclick = () => go(i);
+
+        dotsWrap.appendChild(d);
+      });
+
+      // переход
+      function go(n) {
+
+        cur = (n + slides.length) % slides.length;
+
+        track.style.transform = `translateX(-${cur * 100}%)`;
+
+        dotsWrap.querySelectorAll('.dot').forEach((d, i) => {
+          d.classList.toggle('on', i === cur);
+        });
+      }
+
+      prev.onclick = () => go(cur - 1);
+      next.onclick = () => go(cur + 1);
+
+      // свайпы
+      let tx = 0;
+
+      track.addEventListener('touchstart', e => {
+        tx = e.touches[0].clientX;
+      });
+
+      track.addEventListener('touchend', e => {
+
+        if (Math.abs(tx - e.changedTouches[0].clientX) > 40) {
+
+          go(
+            tx > e.changedTouches[0].clientX
+              ? cur + 1
+              : cur - 1
+          );
+
+        }
+
+      });
+
+    });
+
+    /* === МОДАЛКА — открывается по клику на фото в галерее === */
+    const modal = document.getElementById('modal');
+    const modalImg = document.getElementById('modal-img');
+
+    document.querySelectorAll('.slide img').forEach(img => {
+      img.onclick = () => { modalImg.src = img.src; modal.classList.add('on'); };
+    });
+
+    document.getElementById('modal-close').onclick = () => modal.classList.remove('on');
+    modal.onclick = e => { if (e.target === modal) modal.classList.remove('on'); };
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') modal.classList.remove('on'); });
+  </script>
+
+</body>
+
+</html>
